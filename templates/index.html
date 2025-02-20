@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Dano - LoL</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -45,6 +45,26 @@
             <div class="result">
                 <h2>{{ result }}</h2>
             </div>
+        {% endif %}
+        
+        {% if chart_data %}
+            <div class="chart-container">
+                <canvas id="damageChart"></canvas>
+            </div>
+            <script>
+                var ctx = document.getElementById('damageChart').getContext('2d');
+                var damageChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {{ chart_data|tojson }},
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    });
+            </script>
         {% endif %}
     </div>
 
