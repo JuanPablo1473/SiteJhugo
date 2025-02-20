@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Dano - LoL</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Dano - League of Legends</h1>
+        <form action="/calculate" method="post">
+            <label for="champion">Escolha um Campeão:</label>
+            <select name="champion" id="champion" onchange="updateSkills()">
+                {% for champ in champions %}
+                    <option value="{{ champ }}">{{ champ }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="skill">Escolha uma Habilidade:</label>
+            <select name="skill" id="skill" onchange="updateLevel()">
+                <option value="Q">Q</option>
+                <option value="W">W</option>
+                <option value="E">E</option>
+                <option value="R">R</option>
+            </select>
+            
+            <label for="level">Nível da Habilidade:</label>
+            <input type="number" name="level" id="level" min="1" max="5" required>
+            
+            <label for="ap">Poder de Habilidade (AP):</label>
+            <input type="number" name="ap" id="ap" value="0" required>
+            
+            <label for="ad">Dano de Ataque (AD):</label>
+            <input type="number" name="ad" id="ad" value="0" required>
+            
+            <label for="resistencia">Resistência do Alvo (Armadura ou MR):</label>
+            <input type="number" name="resistencia" id="resistencia" required>
+            
+            <button type="submit">Calcular</button>
+        </form>
+        
+        {% if result %}
+            <div class="result">
+                <h2>{{ result }}</h2>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function updateSkills() {
+            var champion = document.getElementById("champion").value;
+            var skillSelect = document.getElementById("skill");
+            skillSelect.innerHTML = "";
+            
+            var skills = {
+                {% for champ, data in champions.items() %}
+                    "{{ champ }}": [
+                        {% for key in data.skills.keys() %}
+                            { "key": "{{ key }}", "name": "{{ data.skills[key].name }}" },
+                        {% endfor %}
+                    ],
+                {% endfor %}
+            };
+            
+            if (skills[champion]) {
+                skills[champion].forEach(skill => {
+                    var option = document.createElement("option");
+                    option.value = skill.key;
+                    option.textContent = skill.name;
+                    skillSelect.appendChild(option);
+                });
+            }
+            updateLevel();
+        }
+        
+        function updateLevel() {
+            var skill = document.getElementById("skill").value;
+            var levelInput = document.getElementById("level");
+            if (skill === "R") {
+                levelInput.max = 3;
+            } else {
+                levelInput.max = 5;
+            }
+            levelInput.value = 1;
+        }
+    </script>
+</body>
+</html>
