@@ -1,66 +1,142 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+/* ================= RESET GLOBAL ================= */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
-.container {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+body {
+    background-color: #0a0a0a;
+    color: #ffffff;
     text-align: center;
-    color: #2c3e50;
+    font-size: 16px;
 }
 
-form {
-    display: grid;
-    grid-template-columns: 1fr;
+/* ==== BOTÃO DE VOLTAR ==== */
+.back-button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 15px;
+    background-color: #1e90ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+
+.back-button:hover {
+    transform: scale(1.1);
+    background-color: #4682b4;
+}
+
+/* ================= PÁGINA INICIAL ================= */
+.menu-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-}
-
-label {
-    font-weight: bold;
-}
-
-select, input[type="number"] {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #2980b9;
-}
-
-.result {
-    margin-top: 20px;
     padding: 20px;
-    background-color: #ecf0f1;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
+}
+
+.menu-card {
+    background-color: #222;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    width: 200px;
+}
+
+.menu-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* ================= ESCOLHA DE CAMPEÕES ================= */
+.role-filter {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.champion-role-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    justify-content: center;
+}
+
+/* ================= PÁGINA DE ITENS ================= */
+.item-category-container {
+    padding: 20px;
+}
+
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    justify-content: center;
+}
+
+.item-card {
+    background-color: #1c1c1c;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* ================= PÁGINA DE RUNAS ================= */
+.rune-trees {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.rune-tree {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #222;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    width: 250px;
+}
+
+/* ================= PÁGINA DO CAMPEÃO ================= */
+.champion-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.skills-grid {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.skill {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
     text-align: center;
 }
 
-.result h2 {
-    margin: 0;
-    color: #e74c3c;
+.skill:hover {
+    transform: scale(1.1);
 }
