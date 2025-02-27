@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itens - League of Legends</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Loja de Itens</h1>
+        <a href="{{ url_for('home') }}" class="back-button">Voltar</a>
+
+        <div class="item-category-container">
+            {% for category, item_list in items.items() %}
+                <h2 class="item-category">{{ category }}</h2>
+                <div class="item-grid">
+                    {% for item in item_list %}
+                        <div class="item-card" onclick="showItemDetails('{{ item.name }}', `{{ item.description|safe }}`, '{{ item.icon }}', '{{ item.cost }}')">
+                            <img src="{{ item.icon }}" alt="{{ item.name }}">
+                            <p>{{ item.name }}</p>
+                            <span class="item-cost">{{ item.cost }} de ouro</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Modal de Detalhes do Item -->
+        <div id="item-details" class="item-details">
+            <div class="item-details-content">
+                <h2 id="item-name"></h2>
+                <img id="item-icon" src="" alt="">
+                <p id="item-description"></p>
+                <p id="item-cost"></p>
+                <button onclick="closeItemDetails()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showItemDetails(name, description, icon, cost) {
+            document.getElementById("item-name").textContent = name;
+            document.getElementById("item-description").innerHTML = description;
+            document.getElementById("item-icon").src = icon;
+            document.getElementById("item-cost").textContent = cost + " de ouro";
+            document.getElementById("item-details").style.display = "flex";
+        }
+
+        function closeItemDetails() {
+            document.getElementById("item-details").style.display = "none";
+        }
+    </script>
+</body>
+</html>
