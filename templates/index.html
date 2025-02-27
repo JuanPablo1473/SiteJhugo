@@ -3,97 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Dano - LoL</title>
+    <title>League of Legends - Build e Runas</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Calculadora de Dano - League of Legends</h1>
-        <form action="/calculate" method="post">
-            <!-- Selecione o campeão -->
-            <label for="champion">Escolha um Campeão:</label>
-            <select name="champion" id="champion" onchange="updateSkills()">
-                <option value="">Selecione um Campeão</option>
-                {% for champ in champions %}
-                    <option value="{{ champ }}">{{ champ }}</option>
-                {% endfor %}
-            </select>
-            
-            <!-- Selecione a habilidade -->
-            <label for="skill">Escolha uma Habilidade:</label>
-            <select name="skill" id="skill" onchange="updateLevel()">
-                <option value="Q">Q</option>
-                <option value="W">W</option>
-                <option value="E">E</option>
-                <option value="R">R</option>
-            </select>
-            
-            <!-- Selecione o nível da habilidade -->
-            <label for="level">Nível da Habilidade (1 a 5):</label>
-            <input type="number" name="level" id="level" min="1" max="5" value="1" required>
-            
-            <!-- Selecione o Poder de Habilidade (AP) -->
-            <label for="ap">Poder de Habilidade (AP):</label>
-            <input type="number" name="ap" id="ap" value="0" required>
-            
-            <!-- Selecione o Dano de Ataque (AD) -->
-            <label for="ad">Dano de Ataque (AD):</label>
-            <input type="number" name="ad" id="ad" value="0" required>
-            
-            <!-- Selecione a resistência do alvo (Armadura ou MR) -->
-            <label for="resistencia">Resistência do Alvo (Armadura ou MR):</label>
-            <input type="number" name="resistencia" id="resistencia" required>
-            
-            <button type="submit">Calcular Dano</button>
-        </form>
-        
-        {% if result %}
-            <div class="result">
-                <h2>Resultado do Dano: {{ result }}</h2>
-            </div>
-        {% endif %}
+        <header>
+            <h1>League of Legends - Calculadora de Builds e Runas</h1>
+        </header>
+
+        <div class="menu-grid">
+            <a href="{{ url_for('champions_page') }}" class="menu-card">
+                <img src="{{ url_for('static', filename='images/champions.png') }}" alt="Campeões">
+                <h2>Campeões</h2>
+            </a>
+            <a href="{{ url_for('runes_page') }}" class="menu-card">
+                <img src="{{ url_for('static', filename='images/runes.png') }}" alt="Runas">
+                <h2>Runas</h2>
+            </a>
+            <a href="{{ url_for('items_page') }}" class="menu-card">
+                <img src="{{ url_for('static', filename='images/items.png') }}" alt="Itens">
+                <h2>Itens</h2>
+            </a>
+        </div>
     </div>
 
-    <script>
-        // Função para atualizar as habilidades baseadas no campeão selecionado
-        function updateSkills() {
-            var champion = document.getElementById("champion").value;
-            var skillSelect = document.getElementById("skill");
-            skillSelect.innerHTML = "";
-            
-            // Atualiza as habilidades de acordo com o campeão escolhido
-            var skills = {
-                {% for champ, data in champions.items() %}
-                    "{{ champ }}": [
-                        {% for key in data.skills.keys() %}
-                            { "key": "{{ key }}", "name": "{{ data.skills[key].name }}" },
-                        {% endfor %}
-                    ],
-                {% endfor %}
-            };
-            
-            if (skills[champion]) {
-                skills[champion].forEach(skill => {
-                    var option = document.createElement("option");
-                    option.value = skill.key;
-                    option.textContent = skill.name;
-                    skillSelect.appendChild(option);
-                });
-            }
-            updateLevel();
-        }
-        
-        // Função para ajustar o nível máximo de habilidade (3 para 'R', 5 para outras)
-        function updateLevel() {
-            var skill = document.getElementById("skill").value;
-            var levelInput = document.getElementById("level");
-            if (skill === "R") {
-                levelInput.max = 3;
-            } else {
-                levelInput.max = 5;
-            }
-            levelInput.value = 1;  // Reinicia o valor do nível
-        }
-    </script>
+    <footer>
+        <p>© 2024 Desenvolvido para auxiliar jogadores de League of Legends</p>
+    </footer>
 </body>
 </html>
