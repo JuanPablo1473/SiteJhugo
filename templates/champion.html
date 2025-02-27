@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ champion.name }} - League of Legends</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Estilos gerais */
+        body {
+            background: url('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{ champion.id }}_0.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 50px auto;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+        }
+        header {
+            text-align: center;
+        }
+        .back-button {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+        .champion-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 20px auto;
+        }
+        .champion-icon img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid white;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+        }
+        .champion-stats, .skills {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .skills-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .skill {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .skill:hover {
+            transform: scale(1.1);
+        }
+        .skill img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            border: 1px solid white;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+        }
+        .popup img {
+            width: 80px;
+            height: 80px;
+        }
+        .popup button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            background: red;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="{{ url_for('champions_page') }}" class="back-button">Voltar</a>
+            <h1>{{ champion.name }}</h1>
+            <h3>{{ champion.title }}</h3>
+        </header>
+
+        <div class="champion-info">
+            <div class="champion-icon">
+                <img src="{{ champion.icon }}" alt="{{ champion.name }}">
+            </div>
+            <div class="champion-stats">
+                <h2>Status</h2>
+                <p><strong>Vida:</strong> {{ champion.stats.hp | replace('- ', '') }}</p>
+                <p><strong>Dano de Ataque:</strong> {{ champion.stats.attackdamage | replace('- ', '') }}</p>
+                <p><strong>Poder de Habilidade:</strong> {{ champion.stats.spellblock | replace('- ', '') }}</p>
+                <p><strong>Armadura:</strong> {{ champion.stats.armor | replace('- ', '') }}</p>
+                <p><strong>Velocidade de Movimento:</strong> {{ champion.stats.movespeed }}</p>
+            </div>
+        </div>
+
+        <div class="skills">
+            <h2>Habilidades</h2>
+            <div class="skills-grid">
+                <div class="skill" onclick="showSkillDetails('{{ champion.passive.name }}', '{{ champion.passive.description|escape }}', '{{ champion.passive.icon }}')">
+                    <img src="{{ champion.passive.icon }}" alt="{{ champion.passive.name }}">
+                    <p>{{ champion.passive.name }} (Passiva)</p>
+                </div>
+                {% for spell in champion.spells %}
+                    <div class="skill" onclick="showSkillDetails('{{ spell.name }}', '{{ spell.description|escape }}', '{{ spell.icon }}')">
+                        <img src="{{ spell.icon }}" alt="{{ spell.name }}">
+                        <p>{{ spell.name }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" onclick="closeSkillDetails()"></div>
+    <div id="skill-popup" class="popup">
+        <h2 id="skill-name"></h2>
+        <img id="skill-icon" src="" alt="">
+        <p id="skill-description"></p>
+        <button onclick="closeSkillDetails()">Fechar</button>
+    </div>
+
+    <script>
+        function showSkillDetails(name, description, icon) {
+            document.getElementById("skill-name").textContent = name;
+            document.getElementById("skill-description").innerHTML = description;
+            document.getElementById("skill-icon").src = icon;
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("skill-popup").style.display = "block";
+        }
+        function closeSkillDetails() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("skill-popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>
