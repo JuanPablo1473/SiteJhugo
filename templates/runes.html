@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runas - League of Legends</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+        }
+        .rune-trees {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .rune-tree {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .rune-tree:hover {
+            transform: scale(1.05);
+        }
+        .rune-tree img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .rune-title {
+            margin: 10px 0 5px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .rune-description {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .rune-list {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .rune-slot {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .rune {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .rune:hover {
+            transform: scale(1.1);
+        }
+        .rune img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1000;
+        }
+        .popup img {
+            width: 80px;
+            height: 80px;
+        }
+        .popup button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: none;
+            background: red;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Escolha suas Runas</h1>
+            <a href="{{ url_for('home') }}" class="back-button">Voltar</a>
+        </header>
+
+        <div class="rune-trees">
+            {% for tree in runes %}
+                <div class="rune-tree">
+                    <img src="https://ddragon.leagueoflegends.com/cdn/img/{{ tree.icon }}" alt="{{ tree.name }}">
+                    <h2 class="rune-title">{{ tree.name }}</h2>
+                    <p class="rune-description">{{ tree.description }}</p>
+
+                    <div class="rune-list">
+                        {% for slot in tree.slots %}
+                            <div class="rune-slot">
+                                {% for rune in slot.runes %}
+                                    <div class="rune" onclick="showRuneDetails('{{ rune.name }}', `{{ rune.longDesc|safe }}`, '{{ rune.icon }}')">
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/img/{{ rune.icon }}" alt="{{ rune.name }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay" onclick="closeRuneDetails()"></div>
+    <div id="rune-popup" class="popup">
+        <h2 id="rune-name"></h2>
+        <img id="rune-icon" src="" alt="">
+        <p id="rune-description"></p>
+        <button onclick="closeRuneDetails()">Fechar</button>
+    </div>
+
+    <script>
+        function showRuneDetails(name, description, icon) {
+            document.getElementById("rune-name").textContent = name;
+            document.getElementById("rune-description").innerHTML = description;
+            document.getElementById("rune-icon").src = "https://ddragon.leagueoflegends.com/cdn/img/" + icon;
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("rune-popup").style.display = "block";
+        }
+
+        function closeRuneDetails() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("rune-popup").style.display = "none";
+        }
+    </script>
+</body>
+</html>
